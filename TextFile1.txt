@@ -1,0 +1,265 @@
+﻿using System;
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Audio;
+using Microsoft.Xna.Framework.Content;
+using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Input;
+using NodeTesting.models;
+
+namespace Rush_Organ
+{
+    public class Organ
+    {
+        //white keys
+        private Sprite doSprite;
+        private Sprite reSprite;
+        private Sprite miSprite;
+        private Sprite faSprite;
+        private Sprite solSprite;
+        private Sprite laSprite;
+        private Sprite siSprite;
+        private Sprite do1Sprite;
+        private Sprite re1Sprite;
+        private Sprite mi1Sprite;
+
+        //black keys
+        private Sprite black1;
+        private Sprite black2;
+        private Sprite black3;
+        private Sprite black4;
+        private Sprite black5;
+        private Sprite black6;
+        private Sprite black7;
+
+        //colRects
+        private CollisionRect doRect;
+        private CollisionRect reRect;
+        private CollisionRect miRect;
+        private CollisionRect faRect;
+        private CollisionRect solRect;
+        private CollisionRect laRect;
+        private CollisionRect siRect;
+        private CollisionRect do1Rect;
+        private CollisionRect re1Rect;
+        private CollisionRect mi1Rect;
+
+        //sounds
+        private SoundEffect doSound;
+        private SoundEffect reSound;
+        private SoundEffect miSound;
+        private SoundEffect faSound;
+        private SoundEffect solSound;
+        private SoundEffect laSound;
+        private SoundEffect siSound;
+        private SoundEffect do1Sound;
+        private SoundEffect re1Sound;
+        private SoundEffect mi1Sound;
+
+        //keyboard and mouse
+        private MouseState oState;
+        private KeyboardState nState;
+
+        //bools
+        private bool doBool = false;
+
+        //time
+        float clickTime = 1f;
+        float clickMaxTime = 1f;
+        public Organ() { }
+        public void Load()
+        {
+            //load white
+            doSprite = new Sprite("keys/left", new Vector2(205, 360));
+            reSprite = new Sprite("keys/middle", new Vector2(300, 360));
+            miSprite = new Sprite("keys/right", new Vector2(395, 360));
+            faSprite = new Sprite("keys/left", new Vector2(490, 360));
+            solSprite = new Sprite("keys/middle", new Vector2(585, 360));
+            laSprite = new Sprite("keys/middle", new Vector2(680, 360));
+            siSprite = new Sprite("keys/right", new Vector2(775, 360));
+            do1Sprite = new Sprite("keys/left", new Vector2(870, 360));
+            re1Sprite = new Sprite("keys/middle", new Vector2(965, 360));
+            mi1Sprite = new Sprite("keys/right", new Vector2(1060, 360));
+
+            //load black, jump by 95
+            black1 = new Sprite("keys/black_key", new Vector2(252, 264));
+            black2 = new Sprite("keys/black_key", new Vector2(347, 264));
+            black3 = new Sprite("keys/black_key", new Vector2(537, 264));
+            black4 = new Sprite("keys/black_key", new Vector2(632, 264));
+            black5 = new Sprite("keys/black_key", new Vector2(727, 264));
+            black6 = new Sprite("keys/black_key", new Vector2(917, 264));
+            black7 = new Sprite("keys/black_key", new Vector2(1012, 264));
+
+            //collision rectangles
+            doRect = new CollisionRect((int)doSprite.Pos.X, (int)doSprite.Pos.Y, 90, 450);
+            reRect = new CollisionRect((int)reSprite.Pos.X, (int)reSprite.Pos.Y, 90, 450);
+            miRect = new CollisionRect((int)miSprite.Pos.X, (int)miSprite.Pos.Y, 90, 450);
+            faRect = new CollisionRect((int)faSprite.Pos.X, (int)faSprite.Pos.Y, 90, 450);
+            solRect = new CollisionRect((int)solSprite.Pos.X, (int)solSprite.Pos.Y, 90, 450);
+            laRect = new CollisionRect((int)laSprite.Pos.X, (int)laSprite.Pos.Y, 90, 450);
+            siRect = new CollisionRect((int)siSprite.Pos.X, (int)siSprite.Pos.Y, 90, 450);
+            do1Rect = new CollisionRect((int)do1Sprite.Pos.X, (int)do1Sprite.Pos.Y, 90, 450);
+            re1Rect = new CollisionRect((int)re1Sprite.Pos.X, (int)re1Sprite.Pos.Y, 90, 450);
+            mi1Rect = new CollisionRect((int)mi1Sprite.Pos.X, (int)mi1Sprite.Pos.Y, 90, 450);
+
+            //sounds
+            doSound = Globals.Content.Load<SoundEffect>("sounds/do");
+            reSound = Globals.Content.Load<SoundEffect>("sounds/re");
+            miSound = Globals.Content.Load<SoundEffect>("sounds/mi");
+            faSound = Globals.Content.Load<SoundEffect>("sounds/fa");
+            solSound = Globals.Content.Load<SoundEffect>("sounds/sol");
+            laSound = Globals.Content.Load<SoundEffect>("sounds/la");
+            siSound = Globals.Content.Load<SoundEffect>("sounds/si");
+            do1Sound = Globals.Content.Load<SoundEffect>("sounds/do1");
+            re1Sound = Globals.Content.Load<SoundEffect>("sounds/re1");
+            mi1Sound = Globals.Content.Load<SoundEffect>("sounds/mi1");
+
+        }
+
+        public void Update(GameTime gt)
+        {
+            //check input
+            MouseState mState = Mouse.GetState();
+            KeyboardState kState = Keyboard.GetState();
+
+            if (doRect.Contains(mState.Position) && (mState.LeftButton == ButtonState.Pressed && oState.LeftButton == ButtonState.Released) || kState.IsKeyDown(Keys.D1) && nState.IsKeyUp(Keys.D1))
+            {
+                doSound.Play();
+                doBool = true;
+            }
+            if(reRect.Contains(mState.Position) && mState.LeftButton == ButtonState.Pressed && oState.LeftButton == ButtonState.Released || kState.IsKeyDown(Keys.D2) && nState.IsKeyUp(Keys.D2))
+            {
+                reSound.Play();
+            }
+            if (miRect.Contains(mState.Position) && mState.LeftButton == ButtonState.Pressed && oState.LeftButton == ButtonState.Released || kState.IsKeyDown(Keys.D3) && nState.IsKeyUp(Keys.D3))
+            {
+                miSound.Play();
+            }
+            if (faRect.Contains(mState.Position) && mState.LeftButton == ButtonState.Pressed && oState.LeftButton == ButtonState.Released || kState.IsKeyDown(Keys.D4) && nState.IsKeyUp(Keys.D4))
+            {
+                faSound.Play();
+            }
+            if (solRect.Contains(mState.Position) && mState.LeftButton == ButtonState.Pressed && oState.LeftButton == ButtonState.Released || kState.IsKeyDown(Keys.D5) && nState.IsKeyUp(Keys.D5))
+            {
+                solSound.Play();
+            }
+            if (laRect.Contains(mState.Position) && mState.LeftButton == ButtonState.Pressed && oState.LeftButton == ButtonState.Released || kState.IsKeyDown(Keys.D6) && nState.IsKeyUp(Keys.D6))
+            {
+                laSound.Play();
+            }
+            if (siRect.Contains(mState.Position) && mState.LeftButton == ButtonState.Pressed && oState.LeftButton == ButtonState.Released || kState.IsKeyDown(Keys.D7) && nState.IsKeyUp(Keys.D7))
+            {
+                siSound.Play();
+            }
+            if (do1Rect.Contains(mState.Position) && mState.LeftButton == ButtonState.Pressed && oState.LeftButton == ButtonState.Released || kState.IsKeyDown(Keys.D8) && nState.IsKeyUp(Keys.D8))
+            {
+                do1Sound.Play();
+            }
+            if (re1Rect.Contains(mState.Position) && mState.LeftButton == ButtonState.Pressed && oState.LeftButton == ButtonState.Released || kState.IsKeyDown(Keys.D9) && nState.IsKeyUp(Keys.D9))
+            {
+                re1Sound.Play();
+            }
+            if (mi1Rect.Contains(mState.Position) && mState.LeftButton == ButtonState.Pressed && oState.LeftButton == ButtonState.Released || kState.IsKeyDown(Keys.D0) && nState.IsKeyUp(Keys.D0))
+            {
+                mi1Sound.Play();
+            }
+
+            if (doBool)
+            {
+                clickedDo(gt);
+            }
+
+            oState = mState;
+            nState = kState;
+        }
+
+        public void Draw()
+        {
+            //draw white
+            doSprite.Draw(Color.White);
+            reSprite.Draw(Color.White);
+            miSprite.Draw(Color.White);
+            faSprite.Draw(Color.White);
+            solSprite.Draw(Color.White);
+            laSprite.Draw(Color.White);
+            siSprite.Draw(Color.White);
+            do1Sprite.Draw(Color.White);
+            re1Sprite.Draw(Color.White);
+            mi1Sprite.Draw(Color.White);
+
+            if (doBool)
+            {
+                doSprite.Draw(Color.Gray);
+            }
+            reSprite.Draw(Color.Gray);
+            miSprite.Draw(Color.Gray);
+            faSprite.Draw(Color.Gray);
+            solSprite.Draw(Color.Gray);
+            laSprite.Draw(Color.Gray);
+            siSprite.Draw(Color.Gray);
+            do1Sprite.Draw(Color.Gray);
+            re1Sprite.Draw(Color.Gray);
+            mi1Sprite.Draw(Color.Gray);
+
+            //draw black
+            black1.Draw(Color.White);
+            black2.Draw(Color.White);
+            black3.Draw(Color.White);
+            black4.Draw(Color.White);
+            black5.Draw(Color.White);
+            black6.Draw(Color.White);
+            black7.Draw(Color.White);
+
+            //draw REct
+            //doRect.DrawRect(new Color(255, 0, 0, 128));
+            //reRect.DrawRect(new Color(255, 0, 0, 128));
+            //miRect.DrawRect(new Color(255, 0, 0, 128));
+            //faRect.DrawRect(new Color(255, 0, 0, 128));
+            //solRect.DrawRect(new Color(255, 0, 0, 128));
+            //laRect.DrawRect(new Color(255, 0, 0, 128));
+            //siRect.DrawRect(new Color(255, 0, 0, 128));
+            //do1Rect.DrawRect(new Color(255, 0, 0, 128));
+            //re1Rect.DrawRect(new Color(255, 0, 0, 128));
+            //mi1Rect.DrawRect(new Color(255, 0, 0, 128));
+        }
+
+        public void clickedDo(GameTime gt)
+        {
+
+            float time = (float)gt.ElapsedGameTime.TotalSeconds;
+            doBool = true;
+
+            clickTime -= time;
+            if(clickTime < 0)
+            {
+                clickTime = clickMaxTime;
+                doBool = false;
+            }
+        }
+    }
+}
+if (kState.IsKeyDown(Keys.Q) && nState.IsKeyUp(Keys.Q))
+            {
+                AudioRecorder.isRecording = true;
+            }
+            if (kState.IsKeyDown(Keys.W) && nState.IsKeyUp(Keys.W))
+            {
+                recorder.StopRecording();
+            }
+            if (kState.IsKeyDown(Keys.E) && nState.IsKeyUp(Keys.E))
+            {
+                recorder.isPlaying = true;
+            }
+            if (kState.IsKeyDown(Keys.R) && nState.IsKeyUp(Keys.R))
+            {
+                recorder.ClearRecording();
+            }
+
+
+            if (AudioRecorder.isRecording)
+            {
+                recorder.StartRecording(gt);
+            }
+            if (recorder.isPlaying)
+            {
+                recorder.PlayRecording(gt);
+            }
